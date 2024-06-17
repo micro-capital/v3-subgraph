@@ -1,10 +1,7 @@
 import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import { assert, createMockedFunction, test } from 'matchstick-as/assembly/index'
-import { describe, test } from 'matchstick-as/assembly/index'
+import { assert, createMockedFunction, describe, test } from 'matchstick-as/assembly/index'
 
-import { NULL_ETH_HEX_STRING } from '../src/utils'
 import { FACTORY_ADDRESS } from '../src/utils/constants'
-import { StaticTokenDefinition } from '../src/utils/staticTokenDefinition'
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from '../src/utils/token'
 import {
   assertObjectMatches,
@@ -131,24 +128,6 @@ describe('handlePoolCreated', () => {
       assert.stringEquals(symbol, 'USDC')
     })
 
-    test('success - fetch token symbol falls back to static definition', () => {
-      const usdcAddress = Address.fromString(USDC_MAINNET_FIXTURE.address)
-      createMockedFunction(usdcAddress, 'symbol', 'symbol():(string)').reverts()
-      createMockedFunction(usdcAddress, 'symbol', 'symbol():(bytes32)').returns([
-        ethereum.Value.fromBytes(Bytes.fromHexString(NULL_ETH_HEX_STRING)),
-      ])
-      const staticDefinitions: Array<StaticTokenDefinition> = [
-        {
-          address: Address.fromString(USDC_MAINNET_FIXTURE.address),
-          symbol: 'USDC',
-          name: 'USD Coin',
-          decimals: BigInt.fromI32(6),
-        },
-      ]
-      const symbol = fetchTokenSymbol(usdcAddress, staticDefinitions)
-      assert.stringEquals(symbol, 'USDC')
-    })
-
     test('failure - fetch token symbol reverts', () => {
       const usdcAddress = Address.fromString(USDC_MAINNET_FIXTURE.address)
       createMockedFunction(usdcAddress, 'symbol', 'symbol():(string)').reverts()
@@ -173,24 +152,6 @@ describe('handlePoolCreated', () => {
         ethereum.Value.fromBytes(Bytes.fromUTF8('USD Coin')),
       ])
       const name = fetchTokenName(usdcAddress)
-      assert.stringEquals(name, 'USD Coin')
-    })
-
-    test('success - fetch token name falls back to static definition', () => {
-      const usdcAddress = Address.fromString(USDC_MAINNET_FIXTURE.address)
-      createMockedFunction(usdcAddress, 'name', 'name():(string)').reverts()
-      createMockedFunction(usdcAddress, 'name', 'name():(bytes32)').returns([
-        ethereum.Value.fromBytes(Bytes.fromHexString(NULL_ETH_HEX_STRING)),
-      ])
-      const staticDefinitions: Array<StaticTokenDefinition> = [
-        {
-          address: Address.fromString(USDC_MAINNET_FIXTURE.address),
-          symbol: 'USDC',
-          name: 'USD Coin',
-          decimals: BigInt.fromI32(6),
-        },
-      ]
-      const name = fetchTokenName(usdcAddress, staticDefinitions)
       assert.stringEquals(name, 'USD Coin')
     })
 
@@ -228,21 +189,6 @@ describe('handlePoolCreated', () => {
         ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(6)),
       ])
       const decimals = fetchTokenDecimals(usdcAddress)
-      assert.assertTrue(decimals == BigInt.fromI32(6))
-    })
-
-    test('success - fetch token decimals falls back to static definition', () => {
-      const usdcAddress = Address.fromString(USDC_MAINNET_FIXTURE.address)
-      createMockedFunction(usdcAddress, 'decimals', 'decimals():(uint32)').reverts()
-      const staticDefinitions: Array<StaticTokenDefinition> = [
-        {
-          address: Address.fromString(USDC_MAINNET_FIXTURE.address),
-          symbol: 'USDC',
-          name: 'USD Coin',
-          decimals: BigInt.fromI32(6),
-        },
-      ]
-      const decimals = fetchTokenDecimals(usdcAddress, staticDefinitions)
       assert.assertTrue(decimals == BigInt.fromI32(6))
     })
 

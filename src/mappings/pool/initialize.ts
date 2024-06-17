@@ -2,16 +2,15 @@ import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 
 import { Bundle, Pool, Token } from '../../types/schema'
 import { Initialize } from '../../types/templates/Pool/Pool'
-import { updatePoolDayData, updatePoolHourData } from '../../utils/intervalUpdates'
 import {
-  findEthPerToken,
-  getEthPriceInUSD,
   MINIMUM_ETH_LOCKED,
   STABLE_COINS,
   STABLECOIN_IS_TOKEN0,
   USDC_WETH_03_POOL,
   WETH_ADDRESS,
-} from '../../utils/pricing'
+} from '../../utils/constants'
+import { updatePoolDayData, updatePoolHourData } from '../../utils/intervalUpdates'
+import { findEthPerToken, getEthPriceInUSD } from '../../utils/pricing'
 
 export function handleInitialize(event: Initialize): void {
   handleInitializeHelper(event)
