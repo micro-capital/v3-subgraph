@@ -3,7 +3,6 @@ import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { Tick } from '../types/schema'
 import { Mint as MintEvent } from '../types/templates/Pool/Pool'
 import { fastExponentiation, safeDiv } from '.'
-import { safeDiv } from '.'
 import { ONE_BD, ZERO_BI } from './constants'
 
 export function createTick(tickId: string, tickIdx: i32, poolId: string, event: MintEvent): Tick {

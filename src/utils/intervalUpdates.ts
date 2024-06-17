@@ -10,13 +10,14 @@ import {
   TokenDayData,
   TokenHourData,
   UniswapDayData,
-} from './../types/schema'
+} from '../types/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI } from './constants'
 import { FACTORY_ADDRESS } from './constants'
 
 /**
  * Tracks global aggregate data over daily windows
  * @param event
+ * @param factoryAddress
  */
 export function updateUniswapDayData(event: ethereum.Event, factoryAddress: string = FACTORY_ADDRESS): UniswapDayData {
   const uniswap = Factory.load(factoryAddress)!

@@ -1,7 +1,7 @@
 import { BigDecimal, BigInt, ethereum } from '@graphprotocol/graph-ts'
 
 import { Transaction } from '../types/schema'
-import { ONE_BD, ZERO_BD, ZERO_BI } from '../utils/constants'
+import { NULL_ETH_HEX_STRING, ONE_BD, ZERO_BD, ZERO_BI } from './constants'
 
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let resultString = '1'
@@ -77,8 +77,6 @@ export function equalToZero(value: BigDecimal): boolean {
   return false
 }
 
-export const NULL_ETH_HEX_STRING = '0x0000000000000000000000000000000000000000000000000000000000000001'
-
 export function isNullEthValue(value: string): boolean {
   return value == NULL_ETH_HEX_STRING
 }
@@ -95,7 +93,7 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
 }
 
 export function convertEthToDecimal(eth: BigInt): BigDecimal {
-  return eth.toBigDecimal().div(exponentToBigDecimal(18))
+  return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromI32(18)))
 }
 
 export function loadTransaction(event: ethereum.Event): Transaction {

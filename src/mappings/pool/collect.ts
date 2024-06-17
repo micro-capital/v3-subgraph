@@ -3,7 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts'
 import { Bundle, Collect, Factory, Pool, Token } from '../../types/schema'
 import { Collect as CollectEvent } from '../../types/templates/Pool/Pool'
 import { convertTokenToDecimal, loadTransaction } from '../../utils'
-import { FACTORY_ADDRESS, ONE_BI } from '../../utils/constants'
+import { FACTORY_ADDRESS, ONE_BI, WHITELIST_TOKENS } from '../../utils/constants'
 import {
   updatePoolDayData,
   updatePoolHourData,
@@ -11,7 +11,7 @@ import {
   updateTokenHourData,
   updateUniswapDayData,
 } from '../../utils/intervalUpdates'
-import { getTrackedAmountUSD, WHITELIST_TOKENS } from '../../utils/pricing'
+import { getTrackedAmountUSD } from '../../utils/pricing'
 
 export function handleCollect(event: CollectEvent): void {
   handleCollectHelper(event)

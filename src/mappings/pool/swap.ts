@@ -3,7 +3,17 @@ import { BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 import { Bundle, Factory, Pool, Swap, Token } from '../../types/schema'
 import { Swap as SwapEvent } from '../../types/templates/Pool/Pool'
 import { convertTokenToDecimal, loadTransaction, safeDiv } from '../../utils'
-import { FACTORY_ADDRESS, ONE_BI, ZERO_BD } from '../../utils/constants'
+import {
+  FACTORY_ADDRESS,
+  MINIMUM_ETH_LOCKED,
+  ONE_BI,
+  STABLE_COINS,
+  STABLECOIN_IS_TOKEN0,
+  USDC_WETH_03_POOL,
+  WETH_ADDRESS,
+  WHITELIST_TOKENS,
+  ZERO_BD,
+} from '../../utils/constants'
 import {
   updatePoolDayData,
   updatePoolHourData,
@@ -11,18 +21,7 @@ import {
   updateTokenHourData,
   updateUniswapDayData,
 } from '../../utils/intervalUpdates'
-import {
-  findEthPerToken,
-  getEthPriceInUSD,
-  getTrackedAmountUSD,
-  MINIMUM_ETH_LOCKED,
-  sqrtPriceX96ToTokenPrices,
-  STABLE_COINS,
-  STABLECOIN_IS_TOKEN0,
-  USDC_WETH_03_POOL,
-  WETH_ADDRESS,
-  WHITELIST_TOKENS,
-} from '../../utils/pricing'
+import { findEthPerToken, getEthPriceInUSD, getTrackedAmountUSD, sqrtPriceX96ToTokenPrices } from '../../utils/pricing'
 
 export function handleSwap(event: SwapEvent): void {
   handleSwapHelper(event)

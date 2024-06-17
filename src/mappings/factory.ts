@@ -4,10 +4,8 @@ import { PoolCreated } from '../types/Factory/Factory'
 import { Factory } from '../types/schema'
 import { Bundle, Pool, Token } from '../types/schema'
 import { Pool as PoolTemplate } from '../types/templates'
-import { STATIC_TOKEN_DEFINITIONS, StaticTokenDefinition } from '../utils/staticTokenDefinition'
+import { ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, WHITELIST_TOKENS, ZERO_BD, ZERO_BI } from '../utils/constants'
 import { fetchTokenDecimals, fetchTokenName, fetchTokenSymbol, fetchTokenTotalSupply } from '../utils/token'
-import { ADDRESS_ZERO, FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from './../utils/constants'
-import { WHITELIST_TOKENS } from './../utils/pricing'
 
 // The subgraph handler must have this signature to be able to handle events,
 // however, we invoke a helper in order to inject dependencies for unit tests.
@@ -20,7 +18,6 @@ export function handlePoolCreatedHelper(
   event: PoolCreated,
   factoryAddress: string = FACTORY_ADDRESS,
   whitelistTokens: string[] = WHITELIST_TOKENS,
-  staticTokenDefinitions: StaticTokenDefinition[] = STATIC_TOKEN_DEFINITIONS,
 ): void {
   // temp fix
   if (event.params.pool == Address.fromHexString('0x8fe8d9bb8eeba3ed688069c3d6b556c9ca258248')) {
@@ -59,10 +56,10 @@ export function handlePoolCreatedHelper(
   // fetch info if null
   if (token0 === null) {
     token0 = new Token(event.params.token0.toHexString())
-    token0.symbol = fetchTokenSymbol(event.params.token0, staticTokenDefinitions)
-    token0.name = fetchTokenName(event.params.token0, staticTokenDefinitions)
+    token0.symbol = fetchTokenSymbol(event.params.token0)
+    token0.name = fetchTokenName(event.params.token0)
     token0.totalSupply = fetchTokenTotalSupply(event.params.token0)
-    const decimals = fetchTokenDecimals(event.params.token0, staticTokenDefinitions)
+    const decimals = fetchTokenDecimals(event.params.token0)
 
     // bail if we couldn't figure out the decimals
     if (decimals === null) {
